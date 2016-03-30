@@ -39,8 +39,7 @@ let array_filter argv =
         |> Seq.iter ignore
     0
     
- (* filter positions *)
-[<EntryPoint>]
+(* filter positions *)
 let filter_positions argv =
     let data = 
         read_lines
@@ -52,3 +51,11 @@ let filter_positions argv =
         |> Seq.iter ignore
     0
 
+(* return an array of N items *)
+let f n = 
+    Seq.initInfinite (fun i -> i + 1)
+    |> Seq.take n
+    |> List.ofSeq
+
+(* Reverse a list without using reverse *)
+ 
