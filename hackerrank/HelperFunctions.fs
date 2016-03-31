@@ -20,3 +20,9 @@ module General =
                 List.append [head] (my_filter pred tail)
             else
                 my_filter pred tail
+     
+    let rec reverse_list list =
+        match list with
+        | [] -> []
+        | head :: tail ->
+           List.append (reverse_list tail) [head]

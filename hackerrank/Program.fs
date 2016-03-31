@@ -59,3 +59,13 @@ let f n =
 
 (* Reverse a list without using reverse *)
  
+[<EntryPoint>]
+let reverse argv = 
+    let data = 
+        read_lines
+        |> Seq.map Int32.Parse
+        |> List.ofSeq
+        |> reverse_list
+        |> printSeq
+        |> Seq.iter ignore
+    0
