@@ -20,12 +20,9 @@ let list_replication argv =
         |> Seq.map Int32.Parse
         |> Seq.map repeater_by_input
         |> Seq.concat
-        |> printSeq
-        |> Seq.iter ignore
-    0
+    list_input
 
 (* array filter problem *)
-
 let array_filter argv =
     let delimiter = 
         Console.ReadLine()
@@ -34,11 +31,9 @@ let array_filter argv =
         read_lines
         |> Seq.map Int32.Parse
         |> List.ofSeq
-        |> my_filter (fun x -> x > delimiter)
-        |> printSeq
-        |> Seq.iter ignore
-    0
-    
+        |> custom_filter (fun x -> x > delimiter)
+    data
+
 (* filter positions *)
 let filter_positions argv =
     let data = 
@@ -47,9 +42,7 @@ let filter_positions argv =
         |> Seq.mapi (fun i k -> (i,k))
         |> Seq.filter (fun t -> (fst t)%2 <> 0)
         |> Seq.map snd
-        |> printSeq
-        |> Seq.iter ignore
-    0
+    data
 
 (* return an array of N items *)
 let f n = 
@@ -57,15 +50,33 @@ let f n =
     |> Seq.take n
     |> List.ofSeq
 
-(* Reverse a list without using reverse *)
- 
-[<EntryPoint>]
+(* Reverse a list without using the build in reverse *)
 let reverse argv = 
     let data = 
         read_lines
         |> Seq.map Int32.Parse
         |> List.ofSeq
         |> reverse_list
-        |> printSeq
-        |> Seq.iter ignore
-    0
+    data
+
+(* Sum of Odd Elements *)
+let sum_of_odd argv = 
+    argv
+    |> Seq.filter (fun x -> x % 2 <> 0)
+    |> Seq.sum
+
+
+(* Count the number of elements in an array without using count, size or length operators *)
+
+(* Entrypoint to run the function needed every time *)
+
+[<EntryPoint>]
+let main argv = 
+    let input_data = 
+        read_lines
+        |> Seq.map Int32.Parse
+        |> List.ofSeq
+        |> custom_length
+    printfn "%d" input_data
+
+    input_data

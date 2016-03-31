@@ -12,17 +12,23 @@ module General =
         arr |>
             Seq.map smart_print
 
-    let rec my_filter pred arr = 
-        match arr with
+    let rec custom_filter pred list = 
+        match list with
         | [] -> []
         | head :: tail ->
             if pred(head) then
-                List.append [head] (my_filter pred tail)
+                List.append [head] (custom_filter pred tail)
             else
-                my_filter pred tail
+                custom_filter pred tail
      
     let rec reverse_list list =
         match list with
         | [] -> []
         | head :: tail ->
            List.append (reverse_list tail) [head]
+
+    let rec custom_length list = 
+        match list with 
+        | [] -> 0
+        | _ :: tail -> 
+            1 + custom_length tail
