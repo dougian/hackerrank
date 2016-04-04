@@ -45,7 +45,7 @@ let filter_positions argv =
     data
 
 (* return an array of N items *)
-let f n = 
+let arr_of n = 
     Seq.initInfinite (fun i -> i + 1)
     |> Seq.take n
     |> List.ofSeq
@@ -60,23 +60,48 @@ let reverse argv =
     data
 
 (* Sum of Odd Elements *)
-let sum_of_odd argv = 
-    argv
+let sum_of_odd list = 
+    list
     |> Seq.filter (fun x -> x % 2 <> 0)
     |> Seq.sum
 
 
-(* Count the number of elements in an array without using count, size or length operators *)
+(* Update list to absolute values *)
+let update_list list = 
+    list
+    |> Seq.map abs
+
+(* Evaluate the  e^x without using local variables *)
+
+let exponential (x:float) = 
+    Seq.initInfinite (fun i ->(x ** (float i)) / float (fact i))
+    |> Seq.take 10
+    |> Seq.sum
+
+
+(* Compute the area under an algebraic expression by the limit definition of a definite ingregral *)
+let algebraic (a:seq<'a>) (b:seq<'a>) (x:float) =
+    Seq.initInfinite (fun i -> (Seq.item i a) * x ** (Seq.item i b))
+
+
+let ci (l:int) (step:float) i = 
+    float l + step * i
+
+let integral (l:int) (r:int) (step:float) (f:float->float) = 
+    [float l .. step .. float r]
+    |> List.map (fun i -> f (ci l step i))
+    |> List.sum
+
+let area (l:int) (r:int) f =
+    integral l r 0.0001 f
 
 (* Entrypoint to run the function needed every time *)
 
 [<EntryPoint>]
 let main argv = 
-    let input_data = 
-        read_lines
-        |> Seq.map Int32.Parse
-        |> List.ofSeq
-        |> custom_length
-    printfn "%d" input_data
+   let a = Console.ReadLine()
 
-    input_data
+   fibonacci
+   |> Seq.item (int a)
+   |> printfn "%A"
+   0

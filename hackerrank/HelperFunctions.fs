@@ -27,8 +27,25 @@ module General =
         | head :: tail ->
            List.append (reverse_list tail) [head]
 
+(* Count the number of elements in an array without using count, size or length operators *)
     let rec custom_length list = 
         match list with 
         | [] -> 0
         | _ :: tail -> 
             1 + custom_length tail
+
+    let rec fact x =
+        if x < 1 then 1
+        else x * fact (x - 1)
+
+
+    let rec gcd x y = 
+        if x = y then
+            x
+        elif x > y then
+            gcd (x-y) y
+        else 
+            gcd y x
+
+    let fibonacci = 
+        Seq.unfold (fun (fst,snd) -> Some(fst + snd, (snd, fst + snd))) (0,1)
