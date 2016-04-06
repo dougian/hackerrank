@@ -80,7 +80,7 @@ let exponential (x:float) =
 
 
 (* Compute the area under an algebraic expression by the limit definition of a definite ingregral *)
-let algebraic (a:seq<'a>) (b:seq<'a>) (x:float) =
+let algebraic (a:seq<float>) (b:seq<float>) (x:float) =
     Seq.initInfinite (fun i -> (Seq.item i a) * x ** (Seq.item i b))
 
 
@@ -95,13 +95,24 @@ let integral (l:int) (r:int) (step:float) (f:float->float) =
 let area (l:int) (r:int) f =
     integral l r 0.0001 f
 
+
+(* The pascal triangle *)
+
+let pascal_row n = 
+    Seq.initInfinite (fun i -> (fact n) / ((fact i) * (fact (n-i))))
+    |> Seq.take (n+1)
+
+let pascal_triangle k = 
+    Seq.initInfinite (fun i -> (pascal_row i))
+    |> Seq.take k
+
 (* Entrypoint to run the function needed every time *)
 
 [<EntryPoint>]
 let main argv = 
-   let a = Console.ReadLine()
-
-   fibonacci
-   |> Seq.item (int a)
-   |> printfn "%A"
+   let a = Console.ReadLine() |> int
+   pascal_triangle a 
+   |> Seq.map (fun s -> String.Join(" ", s))
+   |> printSeq "%s"
+   |> Seq.iter ignore
    0

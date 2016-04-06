@@ -7,8 +7,8 @@ module General =
         Seq.initInfinite (fun _ -> Console.ReadLine())
         |>  Seq.takeWhile (fun x -> x<> null && x <> "")
 
-    let printSeq arr = 
-        let smart_print = printfn "%A"
+    let printSeq modifier arr = 
+        let smart_print = printfn modifier
         arr |>
             Seq.map smart_print
 
@@ -49,3 +49,4 @@ module General =
 
     let fibonacci = 
         Seq.unfold (fun (fst,snd) -> Some(fst + snd, (snd, fst + snd))) (0,1)
+     
