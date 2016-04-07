@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "hackerrank", "hackerrank\hackerrank.fsproj", "{4C51A8F5-2DC9-4A6E-B0BF-4F984A2A0899}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "hackerrank-functional", "hackerrank\hackerrank-functional.fsproj", "{4C51A8F5-2DC9-4A6E-B0BF-4F984A2A0899}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
