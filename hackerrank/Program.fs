@@ -81,7 +81,7 @@ let exponential (x:float) =
 
 (* Compute the area under an algebraic expression by the limit definition of a definite ingregral *)
 let algebraic (a:seq<float>) (b:seq<float>) (x:float) =
-    Seq.initInfinite (fun i -> (Seq.nth i a) * x ** (Seq.nth i b))
+    Seq.initInfinite (fun i -> (Seq.item i a) * x ** (Seq.item i b))
 
 
 let ci (l:int) (step:float) i = 
