@@ -81,7 +81,7 @@ let exponential (x:float) =
 
 (* Compute the area under an algebraic expression by the limit definition of a definite ingregral *)
 let algebraic (a:seq<float>) (b:seq<float>) (x:float) =
-    Seq.initInfinite (fun i -> (Seq.item i a) * x ** (Seq.item i b))
+    Seq.initInfinite (fun i -> (Seq.nth i a) * x ** (Seq.nth i b))
 
 
 let ci (l:int) (step:float) i = 
@@ -106,6 +106,29 @@ let pascal_triangle k =
     Seq.initInfinite (fun i -> (pascal_row i))
     |> Seq.take k
 
+(* The sierpinski triangle *)
+let width k = 
+    2 * k - 1
+
+let repr size row i = 
+    if i < size - row || i > size + row then
+        "_"
+    else 
+        "1"
+
+let sierpinski_row (size:int) row = 
+    let row_repr = repr size row 
+    [| 1..(width size) |]
+    |> Array.map row_repr 
+    //|> String.concat ""
+
+let triangle k = 
+    let row = sierpinski_row k 
+    [| 0..k-1 |]
+    |> Array.map row 
+   //|> String.concat "\n"
+
+triangle 3
 (* Entrypoint to run the function needed every time *)
 
 [<EntryPoint>]
