@@ -120,15 +120,18 @@ let sierpinski_row (size:int) row =
     let row_repr = repr size row 
     [| 1..(width size) |]
     |> Array.map row_repr 
-    //|> String.concat ""
 
 let triangle k = 
     let row = sierpinski_row k 
     [| 0..k-1 |]
     |> Array.map row 
-   //|> String.concat "\n"
 
-triangle 3
+let print_triangle (triangle : string [] []) = 
+    triangle
+    |> Array.map (fun i -> String.concat "" i)
+    |> String.concat "\n"
+
+printfn "%s" (print_triangle (triangle 6))
 (* Entrypoint to run the function needed every time *)
 
 [<EntryPoint>]
