@@ -162,6 +162,13 @@ let k4 = zeroize 12 9 12 0 (width 6) k3
 let k5 = zeroize 12 9 12 12 (width 12) k4
 printfn "%s" (print_triangle k5)
     
+(* String Mingling *)
+let mingle (a:string) (b:string) =
+    let split_to_list (x:string) = x.ToCharArray() |> List.ofArray |> List.map string
+    List.zip (split_to_list a) (split_to_list b)
+    |> List.collect (fun (x,y) -> [x;y] ) 
+    |> String.concat ""
+
 (* Entrypoint to run the function needed every time *)
 
 [<EntryPoint>]
