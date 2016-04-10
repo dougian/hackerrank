@@ -131,7 +131,37 @@ let print_triangle (triangle : string [] []) =
     |> Array.map (fun i -> String.concat "" i)
     |> String.concat "\n"
 
-printfn "%s" (print_triangle (triangle 6))
+let zeroize size start_row end_row start_col end_col (triangle : string [] []) = 
+    let factor row = 
+        2 * (row - start_row)
+    let repr size row i item= 
+        printfn "%A %A %A %A limit= %A" (factor row) row i item (start_col + size - row + factor row)
+        if i < start_col || i > end_col then
+            item
+        elif i >= start_col + size - row + factor row && i  < end_col - size + row - factor row then
+            "_"
+        else 
+            item
+    let row_mapping row (x : string[]) = 
+        let row_repr = repr size row
+        if row >= start_row && row <= end_row then
+            x 
+            |> Array.mapi row_repr
+        else
+            x
+    triangle
+    |> Array.mapi row_mapping
+
+
+
+
+let k = triangle 12
+let k2 = zeroize 12 6 12 0 (width 12) k
+let k3 = zeroize 12 3 12 0 (width 12) k2
+let k4 = zeroize 12 9 12 0 (width 6) k3
+let k5 = zeroize 12 9 12 12 (width 12) k4
+printfn "%s" (print_triangle k5)
+    
 (* Entrypoint to run the function needed every time *)
 
 [<EntryPoint>]
