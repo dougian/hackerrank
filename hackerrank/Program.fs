@@ -131,11 +131,17 @@ let print_triangle (triangle : string [] []) =
     |> Array.map (fun i -> String.concat "" i)
     |> String.concat "\n"
 
-let zeroize size start_row end_row start_col end_col (triangle : string [] []) = 
+type triangle_point = { x: int ; x2 : int ; y : int ; y2 : int}
+
+let zeroize size (location : triangle_point) (triangle : string [] []) = 
+    let start_row = location.y
+    let end_row = location.y2
+    let start_col = location.x
+    let end_col = location.x2
+
     let factor row = 
         2 * (row - start_row)
     let repr size row i item= 
-        printfn "%A %A %A %A limit= %A" (factor row) row i item (start_col + size - row + factor row)
         if i < start_col || i > end_col then
             item
         elif i >= start_col + size - row + factor row && i  < end_col - size + row - factor row then
@@ -153,15 +159,34 @@ let zeroize size start_row end_row start_col end_col (triangle : string [] []) =
     |> Array.mapi row_mapping
 
 
+let top_from_current (curr : triangle_point) = 
+    [{ curr with y =  curr.y - (int curr.y / 2)}]
 
+let bot_from_current (curr : triangle_point) = 
+    let trans x = 
+        (float x) / 2.0 |> ceil |> int
+    [
+        { curr with y = curr.y + (int curr.y / 2) ; x2 = curr.x2 - (trans curr.x2) };
+        { curr with y = curr.y + (int curr.y / 2) ; x = curr.x + (int curr.x / 2)}
+    ]
 
-let k = triangle 12
-let k2 = zeroize 12 6 12 0 (width 12) k
-let k3 = zeroize 12 3 12 0 (width 12) k2
-let k4 = zeroize 12 9 12 0 (width 6) k3
-let k5 = zeroize 12 9 12 12 (width 12) k4
-printfn "%s" (print_triangle k5)
-    
+let rec fractal_places iter size = 
+    match iter with
+    | 0 -> [{ y = (int size/2) ; y2 = size; x = 0 ; x2 = (width size)}]
+    | _ -> 
+        let prev = fractal_places (iter - 1) size
+        let bot = prev |> List.map bot_from_current |> List.concat
+        let top = prev |> List.map top_from_current |> List.concat
+        List.concat [prev ; top; bot;]
+        
+let create_triangle iter size = 
+    let apply_changes =
+        fractal_places iter size
+        |> List.map ( fun location -> zeroize size location)
+        |> List.reduce (>>)
+    triangle size
+    |> apply_changes
+
 (* String Mingling *)
 let mingle (a:string) (b:string) =
     let split_to_list (x:string) = x.ToCharArray() |> List.ofArray |> List.map string
@@ -174,8 +199,7 @@ let mingle (a:string) (b:string) =
 [<EntryPoint>]
 let main argv = 
    let a = Console.ReadLine() |> int
-   pascal_triangle a 
-   |> Seq.map (fun s -> String.Join(" ", s))
-   |> printSeq "%s"
-   |> Seq.iter ignore
+   create_triangle a 32
+   |> print_triangle
+   |> printfn "%s"
    0
