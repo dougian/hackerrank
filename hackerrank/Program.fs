@@ -162,20 +162,21 @@ let zeroize size (location : triangle_point) (triangle : string [] []) =
 let top_from_current (curr : triangle_point) = 
     [{ curr with y =  curr.y - (int curr.y / 2)}]
 
-let bot_from_current (curr : triangle_point) = 
+let bot_from_current size (curr : triangle_point) = 
     let trans x = 
         (float x) / 2.0 |> ceil |> int
     [
         { curr with y = curr.y + (int curr.y / 2) ; x2 = curr.x2 - (trans curr.x2) };
-        { curr with y = curr.y + (int curr.y / 2) ; x = curr.x + (int curr.x / 2)}
+        { curr with y = curr.y + (int curr.y / 2) ; x = curr.x + (trans (width size - curr.x))}
     ]
 
 let rec fractal_places iter size = 
+    let bot = bot_from_current size
     match iter with
     | 0 -> [{ y = (int size/2) ; y2 = size; x = 0 ; x2 = (width size)}]
     | _ -> 
         let prev = fractal_places (iter - 1) size
-        let bot = prev |> List.map bot_from_current |> List.concat
+        let bot = prev |> List.map bot |> List.concat
         let top = prev |> List.map top_from_current |> List.concat
         List.concat [prev ; top; bot;]
         
